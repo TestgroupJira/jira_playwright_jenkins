@@ -2,7 +2,7 @@ name: Playwright Orchestrator (Jira to Jenkins)
 
 on:
   repository_dispatch:
-    types: [jira-trigger]
+    types: [jira-trigger] 
   workflow_dispatch:
 
 jobs:
