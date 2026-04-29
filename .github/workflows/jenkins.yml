@@ -1,0 +1,59 @@
+name: Playwright Orchestrator (Jira to Jenkins)
+
+on:
+  repository_dispatch:
+    types: [jira-trigger]
+  workflow_dispatch:
+
+jobs:
+  prepare-and-trigger:
+    runs-on: ubuntu-latest
+    
+    env:
+      JIRA_URL: ${{ secrets.JIRA_URL }}
+      JIRA_USER: ${{ secrets.JIRA_USER }}
+      JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
+      JIRA_FIELD_ID: "customfield_10108"
+      JIRA_TICKET_ID: ${{ github.event.client_payload.issue_key }}
+      TARGET_STATUS_ID: "10284" 
+
+    steps:
+      - name: 1. Fetch Jira Data & Calculate Filter
+        id: jira_logic
+        run: |
+          echo "Procesando ticket: $JIRA_TICKET_ID"
+          
+          JSON_RESPONSE=$(curl -s -u "$JIRA_USER:$JIRA_TOKEN" \
+            -H "Accept: application/json" \
+            "$JIRA_URL/rest/api/2/issue/$JIRA_TICKET_ID")
+          
+          CURRENT_STATUS_ID=$(echo "$JSON_RESPONSE" | jq -r '.fields.status.id')
+          if [ "$CURRENT_STATUS_ID" != "$TARGET_STATUS_ID" ]; then
+            echo "Error: El ticket $JIRA_TICKET_ID no está en el estado requerido ($TARGET_STATUS_ID). Status actual: $CURRENT_STATUS_ID"
+            exit 1
+          fi
+
+          TEST_NAME=$(echo "$JSON_RESPONSE" | jq -r ".fields.$JIRA_FIELD_ID // \"\"")
+          echo "Valor capturado de Jira: $TEST_NAME"
+
+          TEST_LOWER=$(echo "$TEST_NAME" | tr '[:upper:]' '[:lower:]')
+
+          if [[ "$TEST_LOWER" == "all" ]] || [[ -z "$TEST_NAME" ]]; then
+            echo "FILTER=" >> $GITHUB_ENV
+          elif [[ "$TEST_NAME" == PLAYW-* ]]; then
+            echo "FILTER=TestCategory=$TEST_NAME" >> $GITHUB_ENV
+          else
+            echo "FILTER=Name~$TEST_NAME" >> $GITHUB_ENV
+          fi
+
+      - name: 2. Enviar Orden a Jenkins Local (Ngrok)
+        run: |
+          # Usamos las variables definidas en el scope del job o env
+          curl -X POST "https://unplied-verda-unurgently.ngrok-free.dev/generic-webhook-trigger/invoke?token=yarko-automatizacion-2026." \
+          -H "Content-Type: application/json" \
+          -d "{
+            \"FILTER\": \"${{ env.FILTER }}\",
+            \"JIRA_TICKET_ID\": \"$JIRA_TICKET_ID\"
+          }"
+          
+          echo "Orden enviada con éxito para el ticket $JIRA_TICKET_ID"

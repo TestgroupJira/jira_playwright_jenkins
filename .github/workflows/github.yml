@@ -1,0 +1,43 @@
+name: GitHub to Jira Finisher
+
+on:
+  repository_dispatch:
+    types: [jenkins_mission_accomplished]
+
+jobs:
+  update-jira:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mover Ticket en Jira
+        run: |
+          STATUS="${{ github.event.client_payload.status }}"
+          TICKET="${{ github.event.client_payload.issue_key }}"
+          
+          echo "Recibido de Jenkins -> Status: $STATUS | Ticket: $TICKET"
+
+          if [ -z "$TICKET" ]; then
+            echo "Error crítico: El ID del ticket (issue_key) no llegó desde Jenkins."
+            exit 1
+          fi
+
+          if [ "$STATUS" == "SUCCESS" ]; then
+            TRANSITION_ID="6"
+            echo "Pruebas aprobadas. Moviendo $TICKET a columna 'LISTO' (ID: $TRANSITION_ID)."
+          else
+            TRANSITION_ID="5"
+            echo "Pruebas fallidas. Moviendo $TICKET a columna 'REVISIÓN' (ID: $TRANSITION_ID)."
+          fi
+
+          RESPONSE=$(curl -s -w "%{http_code}" -X POST -u "${{ secrets.JIRA_USER }}:${{ secrets.JIRA_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            --data "{\"transition\": {\"id\": \"$TRANSITION_ID\"}}" \
+            "${{ secrets.JIRA_URL }}/rest/api/2/issue/$TICKET/transitions")
+
+          HTTP_STATUS="${RESPONSE:${#RESPONSE}-3}"
+          if [ "$HTTP_STATUS" -eq 204 ]; then
+            echo "Transición completada con éxito en Jira para el ticket $TICKET."
+          else
+            echo "Error al actualizar Jira. Código HTTP: $HTTP_STATUS"
+            echo "Respuesta completa: $RESPONSE"
+            exit 1
+          fi
