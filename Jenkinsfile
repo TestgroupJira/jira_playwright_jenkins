@@ -52,7 +52,7 @@ pipeline {
                     bat """
                     "%CURL_EXE%" -X POST -H "Authorization: token %TOKEN%" ^
                     -H "Accept: application/vnd.github.v3+json" ^
-                    https://api.github.com/repos/YarkoAlarcon/automatizacionPlaywright01/dispatches ^
+                    https://api.github.com/repos/TestgroupJira/jira_playwright_jenkins/dispatches ^
                     -d "{\\\"event_type\\\": \\\"jenkins_mission_accomplished\\\", \\\"client_payload\\\": {\\\"status\\\": \\\"${bStatus}\\\", \\\"issue_key\\\": \\\"${params.JIRA_TICKET_ID}\\\"}}"
                     """
                 }
