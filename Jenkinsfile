@@ -8,7 +8,7 @@ pipeline {
 
     environment {
         CURL_EXE = 'C:\\Windows\\System32\\curl.exe'
-        GITHUB_TOKEN = credentials('github-token')
+        GITHUB_TOKEN_SECRET = credentials('github-token')
     }
 
     stages {
@@ -44,7 +44,7 @@ pipeline {
     post {
         always {
             script {
-                withCredentials([string(credentialsId: 'github-token', variable: 'TOKEN')]) {
+                withCredentials([usernamePassword(credentialsId: 'github-token', usernameVariable: 'USER', passwordVariable: 'TOKEN')]) {
                     def bStatus = currentBuild.result ?: 'SUCCESS'
                     
                     echo "Finalizado. Enviando resultado ($bStatus) y Ticket ID (${params.JIRA_TICKET_ID}) a GitHub..."
