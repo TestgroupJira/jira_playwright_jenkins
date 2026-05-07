@@ -15,7 +15,7 @@ jobs:
       JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
       JIRA_FIELD_ID: "customfield_10108"
       JIRA_TICKET_ID: ${{ github.event.client_payload.issue_key }}
-      TARGET_STATUS_ID: "10284" 
+      TARGET_STATUS_ID: "10320" 
 
     steps:
       - name: 1. Fetch Jira Data & Calculate Filter
@@ -49,7 +49,7 @@ jobs:
       - name: 2. Enviar Orden a Jenkins Local (Ngrok)
         run: |
           # Usamos las variables definidas en el scope del job o env
-          curl -X POST "https://unplied-verda-unurgently.ngrok-free.dev/generic-webhook-trigger/invoke?token=yarko-automatizacion-2026." \
+          curl -X POST "https://stash-proved-skilled.ngrok-free.dev/generic-webhook-trigger/invoke?token=yarko-automatizacion-2026." \
           -H "Content-Type: application/json" \
           -d "{
             \"FILTER\": \"${{ env.FILTER }}\",
