@@ -21,10 +21,10 @@ jobs:
           fi
 
           if [ "$STATUS" == "SUCCESS" ]; then
-            TRANSITION_ID="6"
+            TRANSITION_ID="31"
             echo "Pruebas aprobadas. Moviendo $TICKET a columna 'LISTO' (ID: $TRANSITION_ID)."
           else
-            TRANSITION_ID="5"
+            TRANSITION_ID="3"
             echo "Pruebas fallidas. Moviendo $TICKET a columna 'REVISIÓN' (ID: $TRANSITION_ID)."
           fi
 
