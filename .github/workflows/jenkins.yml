@@ -49,7 +49,7 @@ jobs:
       - name: 2. Enviar Orden a Jenkins Local (Ngrok)
         run: |
           # Usamos las variables definidas en el scope del job o env
-          curl -X POST "https://stash-proved-skilled.ngrok-free.dev/generic-webhook-trigger/invoke?token=yarko-automatizacion-2026." \
+          curl -X POST "https://stash-proved-skilled.ngrok-free.dev/generic-webhook-trigger/invoke?token=automatizacion-pw-marco" \
           -H "Content-Type: application/json" \
           -d "{
             \"FILTER\": \"${{ env.FILTER }}\",
