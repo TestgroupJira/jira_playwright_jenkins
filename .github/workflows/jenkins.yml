@@ -13,7 +13,7 @@ jobs:
       JIRA_URL: ${{ secrets.JIRA_URL }}
       JIRA_USER: ${{ secrets.JIRA_USER }}
       JIRA_TOKEN: ${{ secrets.JIRA_TOKEN }}
-      JIRA_FIELD_ID: "customfield_10108"
+      JIRA_FIELD_ID: "customfield_10209"
       JIRA_TICKET_ID: ${{ github.event.client_payload.issue_key }}
       TARGET_STATUS_ID: "10320" 
 
