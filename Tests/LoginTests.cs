@@ -7,7 +7,7 @@ namespace SauceDemoLogin.Tests
     public class LoginTests : BaseTest
     {
         [Test]
-        [Category("PLAYW-3")]
+        [Category("PDJM-3")]
         public async Task LoginExitoso()
         {
             // Navegar a la página de login
@@ -29,7 +29,7 @@ namespace SauceDemoLogin.Tests
         }
 
         [Test]
-        [Category("PLAYW-4")]
+        [Category("PDJM-4")]
         public async Task UsuarioBloqueado()
         {
             // Navegar a la página de login
@@ -51,7 +51,7 @@ namespace SauceDemoLogin.Tests
         }
 
         [Test]
-        [Category("PLAYW-4")]        
+        [Category("PDJM-4")]        
         public async Task PasswordIncorrecto()
         {
             // Navegar a la página de login
@@ -73,7 +73,7 @@ namespace SauceDemoLogin.Tests
         }
 
         [Test]
-        [Category("PLAYW-4")]
+        [Category("PDJM-4")]
         public async Task ValidarCarrito()
         {
             // Navegar a la página de login
