@@ -40,7 +40,7 @@ jobs:
 
           if [[ "$TEST_LOWER" == "all" ]] || [[ -z "$TEST_NAME" ]]; then
             echo "FILTER=" >> $GITHUB_ENV
-          elif [[ "$TEST_NAME" == PLAYW-* ]]; then
+          elif [[ "$TEST_NAME" == PDJM-* ]]; then
             echo "FILTER=TestCategory=$TEST_NAME" >> $GITHUB_ENV
           else
             echo "FILTER=Name~$TEST_NAME" >> $GITHUB_ENV
