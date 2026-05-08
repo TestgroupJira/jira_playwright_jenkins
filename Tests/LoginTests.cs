@@ -7,7 +7,7 @@ namespace SauceDemoLogin.Tests
     public class LoginTests : BaseTest
     {
         [Test]
-        [Category("PDJM-3")]
+        [Category("PDJM-2")]
         public async Task LoginExitoso()
         {
             // Navegar a la página de login
