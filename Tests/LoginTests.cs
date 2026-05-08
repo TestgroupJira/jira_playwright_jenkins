@@ -29,7 +29,7 @@ namespace SauceDemoLogin.Tests
         }
 
         [Test]
-        [Category("PDJM-4")]
+        [Category("PDJM-3")]
         public async Task UsuarioBloqueado()
         {
             // Navegar a la página de login
@@ -51,7 +51,7 @@ namespace SauceDemoLogin.Tests
         }
 
         [Test]
-        [Category("PDJM-4")]        
+        [Category("PDJM-3")]        
         public async Task PasswordIncorrecto()
         {
             // Navegar a la página de login
@@ -73,7 +73,7 @@ namespace SauceDemoLogin.Tests
         }
 
         [Test]
-        [Category("PDJM-4")]
+        [Category("PDJM-3")]
         public async Task ValidarCarrito()
         {
             // Navegar a la página de login
