@@ -26,6 +26,11 @@ jobs:
           JSON_RESPONSE=$(curl -s -u "$JIRA_USER:$JIRA_TOKEN" \
             -H "Accept: application/json" \
             "$JIRA_URL/rest/api/2/issue/$JIRA_TICKET_ID")
+
+          echo "===================================================="
+          echo "DEBUG: ESTRUCTURA DE CAMPOS RECIBIDA DESDE JIRA:"
+          echo "$JSON_RESPONSE" | jq '.fields'
+          echo "===================================================="
           
           CURRENT_STATUS_ID=$(echo "$JSON_RESPONSE" | jq -r '.fields.status.id')
           if [ "$CURRENT_STATUS_ID" != "$TARGET_STATUS_ID" ]; then
